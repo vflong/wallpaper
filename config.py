@@ -9,7 +9,12 @@ import glob
 import ctypes
 import random
 import sqlite3
+import logging
 from PIL import Image
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S')
 
 def get_image_list():
     image_list = glob.glob(wallpaper_path + r"\**\*jpg", recursive=True)
@@ -28,13 +33,13 @@ def create_or_open_db():
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     if db_is_new:
-        print("Creating db...")
+        logging.info("Creating db %s" % (db_file,))
         sql = '''CREATE TABLE IF NOT EXISTS wallpaper(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     wallpaper TEXT,
                     status INTEGER NOT NULL DEFAULT 0);'''
         c.execute(sql)
-        print("Init db...")
+        logging.info("Init db %s" % (db_file,))
         image_list = get_image_list()
         for image_file in image_list:
             image_size = get_image_size(image_file)
@@ -46,7 +51,6 @@ def create_or_open_db():
         conn.commit()
     else:
         pass
-        # print("db_file exists.")
     return conn, c
 
 
@@ -88,7 +92,7 @@ def get_latest_image_from_db():
 def set_wallpaper(image):
     SPI_SETDESKWALLPAPER = 20
     ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image, 3)
-    print("当前壁纸: %s" % (image,))
+    logging.info("当前壁纸: %s" % (image,))
 
 
 def main():

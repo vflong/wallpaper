@@ -3,6 +3,7 @@
 import os
 import sys
 import shutil
+import logging
 import platform
 from PIL import Image
 from datetime import datetime
@@ -14,7 +15,10 @@ Windows 10 only.
 Get Spotlight Picture.
 """
 
-print("当前时间：%s" % (datetime.now().strftime("%F %T")))
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S')
+
 print("\n### 获取 Windows 10 聚焦锁屏结果 ###")
 
 if not platform.platform().startswith("Windows-10"):
@@ -54,10 +58,10 @@ def get_src_file():
 
     if count == 0:
         return 404
-        print("404 Not found")
+        logging.info("404 Not found")
     else:
         return 200
-        print("Congratulation! You have get " + str(count) + " images.")
+        logging.info("Congratulation! You have get " + str(count) + " images.")
 
 
 def list_current_dir_image_info(path):

@@ -3,13 +3,15 @@
 import os
 import sys
 import shutil
+import logging
 import requests
-from datetime import datetime
 import xml.etree.ElementTree
 
 import config
 
-print("当前时间：%s" % (datetime.now().strftime("%F %T")))
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S')
 
 def get_image():
     count = 0
@@ -22,6 +24,7 @@ def get_image():
             e = xml.etree.ElementTree.parse('temp.xml').getroot()
             os.remove('temp.xml')
             image_url = e[6].text
+            logging.info("图片网址：%s" % (image_url,))
             image_name = image_url.split('/')[-1]
             if not os.path.exists(image_name):
                 image_data = requests.get(image_url, stream=True)
@@ -32,7 +35,7 @@ def get_image():
                 image_file = os.path.join(bing_path, image_name,)
                 image_newest = image_file
                 config.insert_db(image_file)
-                print("Image list: %s\n" % (image_name,))
+                logging.info("Image list: %s\n" % (image_name,))
             else:
                 continue
         else:
