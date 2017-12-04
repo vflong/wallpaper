@@ -27,7 +27,8 @@ def get_image_size(file):
 
 
 def create_or_open_db():
-    path_name = os.path.dirname(sys.argv[0])
+    # path_name = os.path.dirname(sys.argv[0])
+    path_name = wallpaper_path
     db_file = os.path.join(path_name, "wallpapers.db")
     db_is_new = not os.path.exists(db_file)
     conn = sqlite3.connect(db_file)
