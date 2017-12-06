@@ -57,11 +57,11 @@ def get_src_file():
             count = count + 1
 
     if count == 0:
-        return 404
         logging.info("404 Not found")
+        return 404
     else:
-        return 200
         logging.info("Congratulation! You have get " + str(count) + " images.")
+        return 200
 
 
 def list_current_dir_image_info(path):

@@ -13,7 +13,8 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S')
 
-def get_image():
+def get_src_file():
+    os.chdir(bingcom_path)
     count = 0
     for i in range(8):
         url_prefix = "https://www.bing.com"
@@ -32,7 +33,6 @@ def get_image():
                 del image_data
                 count = count + 1
                 image_file = os.path.join(bingcom_path, image_name,)
-                image_newest = image_file
                 config.insert_db(image_file)
                 logging.info("Image list: %s\n" % (image_name,))
             else:
@@ -40,22 +40,28 @@ def get_image():
         else:
             pass
     if count == 0:
-        print("### 没有获取到新图片 ###")
-        sys.exit(404)
+        logging.info("404 Not found")
+        return 404
     else:
-        return image_newest
+        logging.info("Congratulation! You have get " + str(count) + " images.")
+        return 200
 
 
 def main():
-    os.makedirs(bingcom_path, exist_ok=True)
-    os.chdir(bingcom_path)
-    image_file = get_image()
-    config.set_wallpaper(image_file)
+    status = get_src_file()
+    if status == 200:
+        image, image_id = config.get_latest_image_from_db()
+        print("\n### 更新壁纸 ###")
+        print("New wallpaper: \n%d %s" % (image_id, image,))
+        config.set_wallpaper(image)
+    else:
+        print("### 未发现新壁纸，壁纸未更新 ###")
 
 
 user_home = os.environ.get("USERPROFILE")
 bingcom_path = user_home + r"\Pictures\Wallpaper\Bingcom"
 
+os.makedirs(bingcom_path, exist_ok=True)
 
 if __name__ == "__main__":
     main()
