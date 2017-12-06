@@ -111,8 +111,16 @@ user_home = os.environ.get("USERPROFILE")
 wallpaper_path = user_home + r"\Pictures\Wallpaper"
 bing_path = user_home + r"\Pictures\Wallpaper\Bing"
 bingcom_path = user_home + r"\Pictures\Wallpaper\Bingcom"
-pc_path = user_home + r"\Pictures\Wallpaper\Spotlight\PC"
+spotlight_path = user_home + r"\Pictures\Wallpaper\Spotlight"
+pc_path = spotlight_path + r"\PC"
+table_path = spotlight_path + r"\Tablet"
 theme_path = user_home + r"\Pictures\Wallpaper\Theme"
+
+os.makedirs(spotlight_path, exist_ok=True)
+os.makedirs(pc_path, exist_ok=True)
+os.makedirs(table_path, exist_ok=True)
+os.makedirs(theme_path, exist_ok=True)
+
 
 if __name__ == "__main__":
     main()
