@@ -1,4 +1,5 @@
 # 从 bing 和 Windows 10 Spotlight 获取图片并设置为壁纸
+1. 保存图片列表，图片插入日期，当前壁纸等信息到 sqlite3
 
 ```bash
 # python 版本
