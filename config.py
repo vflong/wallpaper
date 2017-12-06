@@ -38,7 +38,7 @@ def create_or_open_db():
         sql = '''CREATE TABLE IF NOT EXISTS wallpaper(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     wallpaper TEXT,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    timestamp DATETIME DEFAULT (datetime('now', 'localtime')),
                     status INTEGER NOT NULL DEFAULT 0);'''
         c.execute(sql)
         logging.info("Init db %s" % (db_file,))
@@ -50,7 +50,6 @@ def create_or_open_db():
                     (wallpaper)
                     VALUES(?);'''
                 c.execute(sql, [image_file])
-        conn.commit()
     else:
         pass
     return conn, c
@@ -64,6 +63,7 @@ def insert_db(image_file):
                 VALUES(?);'''
     c.execute(sql, [image_file])
     conn.commit()
+    conn.close()
 
 
 def get_random_image_from_db():
@@ -75,6 +75,9 @@ def get_random_image_from_db():
     c.execute("SELECT wallpaper FROM  wallpaper WHERE id = ?", num)
     ret = c.fetchone()
     image_name = list(ret)[0]
+    c.execute("UPDATE wallpaper SET status  = 0 WHERE status  = 1;")
+    c.execute("UPDATE wallpaper SET status  = 1 WHERE wallpaper = ?;", (image_name,))
+    conn.commit()
     conn.close()
     return image_name, max_id
 
@@ -87,6 +90,9 @@ def get_latest_image_from_db():
     c.execute("SELECT wallpaper FROM  wallpaper WHERE id = ?", num)
     ret = c.fetchone()
     image_name = list(ret)[0]
+    c.execute("UPDATE wallpaper SET status  = 0 WHERE status  = 1;")
+    c.execute("UPDATE wallpaper SET status  = 1 WHERE wallpaper = ?;", (image_name,))
+    conn.commit()
     conn.close()
     return image_name, max_id
 
