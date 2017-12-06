@@ -38,6 +38,7 @@ def create_or_open_db():
         sql = '''CREATE TABLE IF NOT EXISTS wallpaper(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     wallpaper TEXT,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                     status INTEGER NOT NULL DEFAULT 0);'''
         c.execute(sql)
         logging.info("Init db %s" % (db_file,))
