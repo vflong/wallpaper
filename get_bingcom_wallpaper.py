@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import json
 import shutil
 import logging
 import requests
 
 import config
+import utils
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
@@ -39,23 +39,12 @@ def get_src_file():
                 continue
         else:
             pass
-    if count == 0:
-        logging.info("404 Not found")
-        return 404
-    else:
-        logging.info("Congratulation! You have get " + str(count) + " images.")
-        return 200
+        return count
 
 
 def main():
     status = get_src_file()
-    if status == 200:
-        image, image_id = config.get_latest_image_from_db()
-        print("\n### 更新壁纸 ###")
-        print("New wallpaper: \n%d %s" % (image_id, image,))
-        config.set_wallpaper(image)
-    else:
-        print("### 未发现新壁纸，壁纸未更新 ###")
+    utils.get_image_action(status)
 
 
 user_home = os.environ.get("USERPROFILE")
