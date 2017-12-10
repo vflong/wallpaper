@@ -2,8 +2,12 @@
 
 import os
 import sys
+import json
+import shutil
 import logging
 import platform
+import requests
+import xml.etree.ElementTree
 
 import config
 
@@ -27,6 +31,88 @@ def get_image_action(count):
         config.set_wallpaper(image)
 
 
+def get_spotlight_src_file():
+    os.chdir(src_path)
+    count = 0
+    for file in os.listdir('.'):
+        if os.stat(file).st_size / 1024 > 100:
+            imsize = config.get_image_size(file)
+            if imsize == 1920:
+                dst = pc_path + "\\" + file + ".jpg"
+                if not os.path.exists(dst):
+                    config.insert_db(dst)
+            elif imsize == 1080:
+                dst = table_path + "\\" + file + ".jpg"
+            else:
+                continue
+
+            if os.path.exists(dst):
+                continue
+            shutil.copy2(file, dst)
+            print(dst)
+            count = count + 1
+    return count
+
+
+def get_bing_src_file():
+    os.chdir(bing_path)
+    count = 0
+    for i in range(8):
+        url = "http://az517271.vo.msecnd.net/TodayImageService.svc/HPImageArchive?mkt=zh-cn&idx=" + str(i)
+        r = requests.get(url)
+        if r.status_code == 200:
+            with open("temp.xml", "w", encoding="utf-8") as f:
+                f.write(str(r.text))
+            e = xml.etree.ElementTree.parse('temp.xml').getroot()
+            os.remove('temp.xml')
+            image_url = e[6].text
+            logging.info("图片网址：%s" % (image_url,))
+            image_name = image_url.split('/')[-1]
+            if not os.path.exists(image_name):
+                image_data = requests.get(image_url, stream=True)
+                with open(image_name, 'wb') as f:
+                    shutil.copyfileobj(image_data.raw, f)
+                del image_data
+                count = count + 1
+                image_file = os.path.join(bing_path, image_name,)
+                config.insert_db(image_file)
+                logging.info("Image list: %s\n" % (image_name,))
+            else:
+                continue
+        else:
+            pass
+    return count
+
+
+def get_bingcom_src_file():
+    os.chdir(bingcom_path)
+    count = 0
+    for i in range(8):
+        url_prefix = "https://www.bing.com"
+        url = "https://www.bing.com/HPImageArchive.aspx?format=js&idx={0}&n=1&mkt=en-US".format(i)
+        r = requests.get(url)
+        if r.status_code == 200:
+            jsfile = json.loads(r.text)
+            url_suffix = jsfile["images"][0]["url"]
+            image_url = url_prefix + url_suffix
+            logging.info("图片网址：%s" % (image_url,))
+            image_name = image_url.split('/')[-1]
+            if not os.path.exists(image_name):
+                image_data = requests.get(image_url, stream=True)
+                with open(image_name, 'wb') as f:
+                    shutil.copyfileobj(image_data.raw, f)
+                del image_data
+                count = count + 1
+                image_file = os.path.join(bingcom_path, image_name,)
+                config.insert_db(image_file)
+                logging.info("Image list: %s\n" % (image_name,))
+            else:
+                continue
+        else:
+            pass
+    return count
+
+
 user_home = os.environ.get("USERPROFILE")
 src_path = user_home + r"\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets"
 spotlight_path = user_home + r"\Pictures\Wallpaper\Spotlight"
@@ -34,14 +120,17 @@ pc_path = spotlight_path + r"\PC"
 table_path = spotlight_path + r"\Tablet"
 theme_path = user_home + r"\Pictures\Wallpaper"
 bing_path = user_home + r"\Pictures\Wallpaper\Bing"
+bingcom_path = user_home + r"\Pictures\Wallpaper\Bingcom"
 
 os.makedirs(spotlight_path, exist_ok=True)
 os.makedirs(pc_path, exist_ok=True)
 os.makedirs(table_path, exist_ok=True)
 os.makedirs(theme_path, exist_ok=True)
 os.makedirs(bing_path, exist_ok=True)
+os.makedirs(bingcom_path, exist_ok=True)
 
 
 if __name__ == "__main__":
-    get_image_action()
+    pass
+    # get_image_action()
 

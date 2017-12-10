@@ -78,6 +78,7 @@ def get_random_image_from_db():
     c.execute("UPDATE wallpaper SET status  = 1 WHERE wallpaper = ?;", (image_name,))
     conn.commit()
     conn.close()
+    logging.info("壁纸总数：%d" % (max_id,))
     return image_name, max_id
 
 
@@ -93,6 +94,7 @@ def get_latest_image_from_db():
     c.execute("UPDATE wallpaper SET status  = 1 WHERE wallpaper = ?;", (image_name,))
     conn.commit()
     conn.close()
+    logging.info("壁纸总数：%d" % (max_id,))
     return image_name, max_id
 
 
