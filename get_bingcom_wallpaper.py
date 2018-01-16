@@ -2,6 +2,10 @@
 
 import utils
 
+"""
+Get Bing Picture.
+"""
+
 
 def main():
     status = utils.get_bingcom_src_file()

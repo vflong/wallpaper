@@ -2,6 +2,10 @@
 
 import utils
 
+"""
+Get Bing Wallpaper.
+"""
+
 
 def main():
     status = utils.get_bing_src_file()
