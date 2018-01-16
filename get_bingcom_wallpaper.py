@@ -2,6 +2,7 @@
 
 import utils
 
+
 def main():
     status = utils.get_bingcom_src_file()
     utils.get_image_action(status)
