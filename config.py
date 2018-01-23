@@ -12,6 +12,7 @@ import random
 import sqlite3
 import logging
 from PIL import Image
+from datetime import datetime
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
@@ -31,6 +32,11 @@ def get_image_sha256(file):
     sha256 = hashlib.sha256(open(file, 'rb').read()).hexdigest()
     return sha256
 
+
+def get_image_ctime(file):
+    raw_time = os.path.getctime(file)
+    ctime = datetime.fromtimestamp(raw_time).strftime("%F %T")
+    return ctime
 
 def create_or_open_db():
     # path_name = os.path.dirname(sys.argv[0])
@@ -54,11 +60,11 @@ def create_or_open_db():
             image_size = get_image_size(image_file)
             if image_size >= 1920:
                 sha256 = get_image_sha256(image_file)
-                print(sha256)
+                ctime = get_image_ctime(image_file)
                 sql = '''INSERT INTO wallpaper
-                    (wallpaper, sha256)
-                    VALUES(?, ?);'''
-                c.execute(sql, [image_file, sha256])
+                    (wallpaper, sha256, timestamp)
+                    VALUES(?, ?, ?);'''
+                c.execute(sql, [image_file, sha256, ctime])
     else:
         pass
     return conn, c
@@ -68,10 +74,11 @@ def create_or_open_db():
 def insert_db(image_file):
     conn, c = create_or_open_db()
     sha256 = get_image_sha256(image_file)
+    ctime = get_image_ctime(image_file)
     sql = '''INSERT INTO wallpaper
-                    (wallpaper, sha256)
-                    VALUES(?, ?);'''
-    c.execute(sql, [image_file, sha256])
+                    (wallpaper, sha256, timestamp)
+                    VALUES(?, ?, ?);'''
+    c.execute(sql, [image_file, sha256, ctime])
     conn.commit()
     conn.close()
 
