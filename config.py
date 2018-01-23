@@ -5,6 +5,8 @@
 
 import os
 import glob
+import redis
+import hashlib
 import ctypes
 import random
 import sqlite3
@@ -25,6 +27,11 @@ def get_image_size(file):
     return im.size[0]
 
 
+def get_image_sha256(file):
+    sha256 = hashlib.sha256(open(file, 'rb').read()).hexdigest()
+    return sha256
+
+
 def create_or_open_db():
     # path_name = os.path.dirname(sys.argv[0])
     path_name = wallpaper_path
@@ -37,6 +44,7 @@ def create_or_open_db():
         sql = '''CREATE TABLE IF NOT EXISTS wallpaper(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     wallpaper TEXT,
+                    sha256 TEXT,
                     timestamp DATETIME DEFAULT (datetime('now', 'localtime')),
                     status INTEGER NOT NULL DEFAULT 0);'''
         c.execute(sql)
@@ -45,10 +53,12 @@ def create_or_open_db():
         for image_file in image_list:
             image_size = get_image_size(image_file)
             if image_size >= 1920:
+                sha256 = get_image_sha256(image_file)
+                print(sha256)
                 sql = '''INSERT INTO wallpaper
-                    (wallpaper)
-                    VALUES(?);'''
-                c.execute(sql, [image_file])
+                    (wallpaper, sha256)
+                    VALUES(?, ?);'''
+                c.execute(sql, [image_file, sha256])
     else:
         pass
     return conn, c
@@ -57,10 +67,11 @@ def create_or_open_db():
 
 def insert_db(image_file):
     conn, c = create_or_open_db()
+    sha256 = get_image_sha256(image_file)
     sql = '''INSERT INTO wallpaper
-                (wallpaper)
-                VALUES(?);'''
-    c.execute(sql, [image_file])
+                    (wallpaper, sha256)
+                    VALUES(?, ?);'''
+    c.execute(sql, [image_file, sha256])
     conn.commit()
     conn.close()
 
