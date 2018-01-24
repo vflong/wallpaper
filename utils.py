@@ -10,6 +10,7 @@ import requests
 import xml.etree.ElementTree
 
 import config
+import path
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
@@ -42,7 +43,7 @@ def get_spotlight_src_file():
                 if not os.path.exists(dst):
                     config.insert_db(dst)
             elif imsize == 1080:
-                dst = table_path + "\\" + file + ".jpg"
+                dst = tablet_path + "\\" + file + ".jpg"
             else:
                 continue
 
@@ -113,22 +114,7 @@ def get_bingcom_src_file():
     return count
 
 
-user_home = os.environ.get("USERPROFILE")
-src_path = user_home + r"\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets"
-spotlight_path = user_home + r"\Pictures\Wallpaper\Spotlight"
-pc_path = spotlight_path + r"\PC"
-table_path = spotlight_path + r"\Tablet"
-theme_path = user_home + r"\Pictures\Wallpaper"
-bing_path = user_home + r"\Pictures\Wallpaper\Bing"
-bingcom_path = user_home + r"\Pictures\Wallpaper\Bingcom"
-
-os.makedirs(spotlight_path, exist_ok=True)
-os.makedirs(pc_path, exist_ok=True)
-os.makedirs(table_path, exist_ok=True)
-os.makedirs(theme_path, exist_ok=True)
-os.makedirs(bing_path, exist_ok=True)
-os.makedirs(bingcom_path, exist_ok=True)
-
+wallpaper_path, src_path, bing_path, bingcom_path, spotlight_path, pc_path, tablet_path, theme_path = path.mkdirs()
 
 if __name__ == "__main__":
     pass

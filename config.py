@@ -14,6 +14,8 @@ import logging
 from PIL import Image
 from datetime import datetime
 
+import path
+
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S')
@@ -50,6 +52,8 @@ def create_or_open_db():
         sql = '''CREATE TABLE IF NOT EXISTS wallpaper(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     wallpaper TEXT,
+                    dirname TEXT,
+                    basename TEXT,
                     sha256 TEXT,
                     timestamp DATETIME DEFAULT (datetime('now', 'localtime')),
                     status INTEGER NOT NULL DEFAULT 0);'''
@@ -61,10 +65,11 @@ def create_or_open_db():
             if image_size >= 1920:
                 sha256 = get_image_sha256(image_file)
                 ctime = get_image_ctime(image_file)
+                dirname, basename = (os.path.dirname(image_file), os.path.basename(image_file))
                 sql = '''INSERT INTO wallpaper
-                    (wallpaper, sha256, timestamp)
-                    VALUES(?, ?, ?);'''
-                c.execute(sql, [image_file, sha256, ctime])
+                    (wallpaper, dirname, basename, sha256, timestamp)
+                    VALUES(?, ?, ?, ?, ?);'''
+                c.execute(sql, [image_file, dirname, basename, sha256, ctime])
     else:
         pass
     return conn, c
@@ -75,10 +80,11 @@ def insert_db(image_file):
     conn, c = create_or_open_db()
     sha256 = get_image_sha256(image_file)
     ctime = get_image_ctime(image_file)
+    dirname, basename = (os.path.dirname(image_file), os.path.basename(image_file))
     sql = '''INSERT INTO wallpaper
-                    (wallpaper, sha256, timestamp)
-                    VALUES(?, ?, ?);'''
-    c.execute(sql, [image_file, sha256, ctime])
+                    (wallpaper, dirname, basename, sha256, timestamp)
+                    VALUES(?, ?, ?, ?, ?);'''
+    c.execute(sql, [image_file, dirname, basename, sha256, ctime])
     conn.commit()
     conn.close()
 
@@ -126,20 +132,7 @@ def main():
     pass
 
 
-user_home = os.environ.get("USERPROFILE")
-wallpaper_path = user_home + r"\Pictures\Wallpaper"
-bing_path = user_home + r"\Pictures\Wallpaper\Bing"
-bingcom_path = user_home + r"\Pictures\Wallpaper\Bingcom"
-spotlight_path = user_home + r"\Pictures\Wallpaper\Spotlight"
-pc_path = spotlight_path + r"\PC"
-table_path = spotlight_path + r"\Tablet"
-theme_path = user_home + r"\Pictures\Wallpaper\Theme"
-
-os.makedirs(spotlight_path, exist_ok=True)
-os.makedirs(pc_path, exist_ok=True)
-os.makedirs(table_path, exist_ok=True)
-os.makedirs(theme_path, exist_ok=True)
-
+wallpaper_path, src_path, bing_path, bingcom_path, spotlight_path, pc_path, tablet_path, theme_path = path.mkdirs()
 
 if __name__ == "__main__":
     main()
