@@ -4,10 +4,10 @@ import os
 import configparser
 
 user_home = os.environ.get("USERPROFILE")
-
 config = configparser.ConfigParser()
+config_file = os.path.join(os.path.dirname(__file__), 'config.ini')
+config.read(config_file)
 
-config.read('config.ini')
 wallpaper_path = os.path.join(user_home, config['Paths']['wallpaper_path'])
 src_path = os.path.join(user_home, config['Paths']['src_path'])
 bing_path = os.path.join(user_home, config['Paths']['bing_path'])
