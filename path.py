@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+define wallpaper path.
+"""
 
 import os
 import configparser
