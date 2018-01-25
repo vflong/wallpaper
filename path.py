@@ -14,7 +14,7 @@ config.read(config_file)
 
 def mkdirs():
     # path_name = ['wallpaper_path', 'src_path', 'bing_path', 'bingcom_path', 'spotlight_path', 'pc_path', 'tablet_path', 'theme_path']
-    path_name = [path for path in config['Paths']]
+    path_name = list(config['Paths'].keys())
     path_list = []
     for image_path in path_name:
         image_path = os.path.join(user_home, config['Paths'][image_path])
