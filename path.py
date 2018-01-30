@@ -22,3 +22,5 @@ def mkdirs():
         path_list.append(image_path)
     return path_list
 
+
+wallpaper_path, src_path, bing_path, bingcom_path, spotlight_path, pc_path, tablet_path, theme_path = mkdirs()

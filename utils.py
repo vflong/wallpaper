@@ -10,7 +10,7 @@ import requests
 import xml.etree.ElementTree
 
 import config
-import path
+from path import wallpaper_path, src_path, bing_path, bingcom_path, spotlight_path, pc_path, tablet_path, theme_path
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
@@ -41,15 +41,16 @@ def get_spotlight_src_file():
             if imsize == 1920:
                 dst = pc_path + "\\" + file + ".jpg"
                 if not os.path.exists(dst):
+                    shutil.copy2(file, dst)
                     config.insert_db(dst)
             elif imsize == 1080:
                 dst = tablet_path + "\\" + file + ".jpg"
+                shutil.copy2(file, dst)
             else:
                 continue
 
             if os.path.exists(dst):
                 continue
-            shutil.copy2(file, dst)
             print(dst)
             count = count + 1
     return count
@@ -113,8 +114,6 @@ def get_bingcom_src_file():
             pass
     return count
 
-
-wallpaper_path, src_path, bing_path, bingcom_path, spotlight_path, pc_path, tablet_path, theme_path = path.mkdirs()
 
 if __name__ == "__main__":
     pass

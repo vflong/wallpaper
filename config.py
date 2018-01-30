@@ -14,7 +14,7 @@ import logging
 from PIL import Image
 from datetime import datetime
 
-import path
+from path import wallpaper_path, src_path, bing_path, bingcom_path, spotlight_path, pc_path, tablet_path, theme_path
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
@@ -131,8 +131,6 @@ def set_wallpaper(image):
 def main():
     pass
 
-
-wallpaper_path, src_path, bing_path, bingcom_path, spotlight_path, pc_path, tablet_path, theme_path = path.mkdirs()
 
 if __name__ == "__main__":
     main()
