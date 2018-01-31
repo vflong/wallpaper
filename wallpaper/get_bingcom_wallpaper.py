@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import utils
-
 """
 Get Bing Picture.
 """
 
+from utils import get_bingcom_src_file
+from utils import get_image_action
 
 def main():
-    status = utils.get_bingcom_src_file()
-    utils.get_image_action(status)
+    status = get_bingcom_src_file()
+    get_image_action(status)
 
 
 if __name__ == "__main__":

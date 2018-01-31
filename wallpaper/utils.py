@@ -9,7 +9,7 @@ import platform
 import requests
 import xml.etree.ElementTree
 
-import config
+from config import *
 from path import wallpaper_path, src_path, bing_path, bingcom_path, spotlight_path, pc_path, tablet_path, theme_path
 
 logging.basicConfig(level=logging.INFO,
@@ -26,10 +26,10 @@ def get_image_action(count):
         print("### 未发现新壁纸，壁纸未更新 ###")
     else:
         logging.info("Congratulation! You have get " + str(count) + " images.")
-        image, image_id = config.get_latest_image_from_db()
+        image, image_id = get_latest_image_from_db()
         print("\n### 更新壁纸 ###")
         print("New wallpaper: \n%d %s" % (image_id, image,))
-        config.set_wallpaper(image)
+        set_wallpaper(image)
 
 
 def get_spotlight_src_file():
@@ -37,12 +37,12 @@ def get_spotlight_src_file():
     count = 0
     for file in os.listdir('.'):
         if os.stat(file).st_size / 1024 > 100:
-            imsize = config.get_image_size(file)
+            imsize = get_image_size(file)
             if imsize == 1920:
                 dst = pc_path + "\\" + file + ".jpg"
                 if not os.path.exists(dst):
                     shutil.copy2(file, dst)
-                    config.insert_db(dst)
+                    insert_db(dst)
             elif imsize == 1080:
                 dst = tablet_path + "\\" + file + ".jpg"
                 shutil.copy2(file, dst)
@@ -77,7 +77,7 @@ def get_bing_src_file():
                 del image_data
                 count = count + 1
                 image_file = os.path.join(bing_path, image_name,)
-                config.insert_db(image_file)
+                insert_db(image_file)
                 logging.info("Image list: %s\n" % (image_name,))
             else:
                 continue
@@ -106,7 +106,7 @@ def get_bingcom_src_file():
                 del image_data
                 count = count + 1
                 image_file = os.path.join(bingcom_path, image_name,)
-                config.insert_db(image_file)
+                insert_db(image_file)
                 logging.info("Image list: %s\n" % (image_name,))
             else:
                 continue

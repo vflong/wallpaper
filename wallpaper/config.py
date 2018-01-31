@@ -5,7 +5,6 @@
 
 import os
 import glob
-import redis
 import hashlib
 import ctypes
 import random
@@ -128,9 +127,4 @@ def set_wallpaper(image):
     logging.info("当前壁纸: %s" % (image,))
 
 
-def main():
-    pass
 
-
-if __name__ == "__main__":
-    main()
