@@ -7,8 +7,9 @@ from config import get_random_image_from_db, set_wallpaper
 
 
 def main():
-    image_name, count = get_random_image_from_db()
+    image_name, _ = get_random_image_from_db()
     set_wallpaper(image_name)
+    return image_name
 
 
 if __name__ == "__main__":

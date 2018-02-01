@@ -121,6 +121,31 @@ def get_latest_image_from_db():
     return image_name, max_id
 
 
+def get_all_image_from_db():
+    conn, c = create_or_open_db()
+    c.execute("SELECT * FROM  wallpaper;")
+    ret = c.fetchall()
+    image_list = list(ret)
+    conn.commit()
+    conn.close()
+    return image_list
+
+
+def get_one_image_from_db(id):
+    conn, c = create_or_open_db()
+    c.execute("SELECT max(id) FROM wallpaper")
+    max_id = list(c.fetchone())[0]
+    if int(id) > max_id:
+        id = max_id
+    num = (int(id),)
+    c.execute("SELECT * FROM  wallpaper WHERE id = ?", num)
+    ret = c.fetchall()
+    image_name = list(ret)
+    conn.commit()
+    conn.close()
+    return image_name
+
+
 def set_wallpaper(image):
     SPI_SETDESKWALLPAPER = 20
     ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image, 3)
