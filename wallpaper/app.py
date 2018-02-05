@@ -25,42 +25,18 @@ def robots():
 @app.route('/all')
 def all():
     image_list = get_all_image_from_db()
-    with open('templates/wallpaper.html', 'w') as f:
-        f.write("""<!DOCTYPE html>
-<html>
-<body>
-
-<table style="width:100%">
-<tr><th>id</th><th>wallpaper</th><th>dirname</th><th>basename</th><th>sha256</th><th>timestamp</th><th>status</th></tr>
-""")
+    with open('templates/wallpaper.1.html', 'w') as f:
         for image in image_list:
             f.write('<tr>' + ' '.join('<td>' + str(item) + '</td>' for item in image) + '</tr>\n')
-        f.write("""
-</table>
-
-</body>
-</html>""")
     return render_template('wallpaper.html')
 
 
 @app.route('/all/<int:id>')
 def one(id):
     image_list = get_one_image_from_db(id)
-    with open('templates/image.html', 'w') as f:
-        f.write("""<!DOCTYPE html>
-<html>
-<body>
-
-<table style="width:100%">
-<tr><th>id</th><th>wallpaper</th><th>dirname</th><th>basename</th><th>sha256</th><th>timestamp</th><th>status</th></tr>
-""")
+    with open('templates/image.1.html', 'w') as f:
         for image in image_list:
             f.write('<tr>' + ' '.join('<td>' + str(item) + '</td>' for item in image) + '</tr>\n')
-        f.write("""
-</table>
-
-</body>
-</html>""")
     return render_template('image.html')
 
 
