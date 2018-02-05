@@ -56,6 +56,7 @@ def latest():
     image_name, image_id = get_latest_image_from_db()
     app.static_folder = os.path.dirname(image_name)
     image_url = os.path.basename(image_name)
+    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
 
 
 @app.route('/change')
