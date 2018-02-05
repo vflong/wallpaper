@@ -10,6 +10,7 @@ from config import get_one_image_from_db
 import change_wallpaper
 
 app = Flask(__name__)
+app.debug = True
 
 
 @app.route('/')
@@ -37,23 +38,19 @@ def one(id):
     with open('templates/image.1.html', 'w') as f:
         for image in image_list:
             f.write('<tr>' + ' '.join('<td>' + str(item) + '</td>' for item in image) + '</tr>\n')
-    return render_template('image.html')
+    return render_template('image.html', id=id)
 
 
 @app.route('/random')
 def random():
-    image_name, max_id = get_random_image_from_db()
-    ret = """image_name: {0}
-max_id: {1}""".format(image_name, max_id)
-    return ret
+    image_name, image_id = get_random_image_from_db()
+    return render_template('info.html', image_id=image_id, image_name=image_name)
 
 
 @app.route('/latest')
 def latest():
-    image_name, max_id = get_latest_image_from_db()
-    ret = """image_name: {0}
-max_id: {1}""".format(image_name, max_id)
-    return ret
+    image_name, image_id = get_latest_image_from_db()
+    return render_template('info.html', image_id=image_id, image_name=image_name)
 
 
 @app.route('/change')

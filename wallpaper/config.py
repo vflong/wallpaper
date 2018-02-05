@@ -102,7 +102,7 @@ def get_random_image_from_db():
     conn.commit()
     conn.close()
     logging.info("壁纸总数：%d" % (max_id,))
-    return image_name, max_id
+    return image_name, key
 
 
 def get_latest_image_from_db():
@@ -128,6 +128,7 @@ def get_all_image_from_db():
     image_list = list(ret)
     conn.commit()
     conn.close()
+    logging.info("获取所有壁纸")
     return image_list
 
 
@@ -136,6 +137,7 @@ def get_one_image_from_db(id):
     c.execute("SELECT max(id) FROM wallpaper")
     max_id = list(c.fetchone())[0]
     if int(id) > max_id:
+        logging.info("id 大于壁纸总数，取最新的壁纸")
         id = max_id
     num = (int(id),)
     c.execute("SELECT * FROM  wallpaper WHERE id = ?", num)
@@ -143,6 +145,7 @@ def get_one_image_from_db(id):
     image_name = list(ret)
     conn.commit()
     conn.close()
+    logging.info("随机获取一张壁纸")
     return image_name
 
 
