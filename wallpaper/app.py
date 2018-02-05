@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import argparse
 from flask import Flask, render_template, make_response
 
@@ -7,9 +8,10 @@ from config import get_random_image_from_db
 from config import get_latest_image_from_db
 from config import get_all_image_from_db
 from config import get_one_image_from_db
+from path import wallpaper_path
 import change_wallpaper
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="", static_folder=wallpaper_path)
 app.debug = True
 
 
@@ -44,13 +46,16 @@ def one(id):
 @app.route('/random')
 def random():
     image_name, image_id = get_random_image_from_db()
-    return render_template('info.html', image_id=image_id, image_name=image_name)
+    app.static_folder = os.path.dirname(image_name)
+    image_url = os.path.basename(image_name)
+    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
 
 
 @app.route('/latest')
 def latest():
     image_name, image_id = get_latest_image_from_db()
-    return render_template('info.html', image_id=image_id, image_name=image_name)
+    app.static_folder = os.path.dirname(image_name)
+    image_url = os.path.basename(image_name)
 
 
 @app.route('/change')

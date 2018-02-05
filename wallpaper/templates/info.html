@@ -6,6 +6,6 @@
 </head>
 <body>
 <h3> {{ image_name }}</h3>
-<img src={{ image_name }} alt="Smiley face" height="42" width="42">
+<img src={{ url_for('static', filename=image_url) }} alt="Smiley face" height="50%" width="50%">
 </body>
 </html>
