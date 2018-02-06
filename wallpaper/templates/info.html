@@ -6,6 +6,9 @@
 </head>
 <body>
 <h3> {{ image_name }}</h3>
+<p>
+    <input type="button" value="设为壁纸" onclick="window.location.href='/change/{{ image_id }}';"/>
+</p>
 <img src={{ url_for('static', filename=image_url) }} alt="Smiley face" height="50%" width="50%">
 </body>
 </html>
