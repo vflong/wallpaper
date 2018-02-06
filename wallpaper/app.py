@@ -61,8 +61,10 @@ def latest():
 
 @app.route('/change')
 def change():
-    image_name = change_wallpaper.main()
-    return image_name
+    image_name, image_id = change_wallpaper.main()
+    app.static_folder = os.path.dirname(image_name)
+    image_url = os.path.basename(image_name)
+    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
 
 
 if __name__ == '__main__':
