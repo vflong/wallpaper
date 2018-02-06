@@ -2,17 +2,16 @@
 
 import os
 import argparse
-from flask import Flask, render_template, make_response
+from flask import Flask, render_template
 
 from config import get_random_image_from_db
 from config import get_latest_image_from_db
 from config import get_all_image_from_db
 from config import get_one_image_from_db
-from path import wallpaper_path
 from config import set_wallpaper
 import change_wallpaper
 
-app = Flask(__name__, static_url_path="", static_folder=wallpaper_path)
+app = Flask(__name__)
 app.debug = True
 
 
