@@ -9,6 +9,7 @@ from config import get_latest_image_from_db
 from config import get_all_image_from_db
 from config import get_one_image_from_db
 from path import wallpaper_path
+from config import set_wallpaper
 import change_wallpaper
 
 app = Flask(__name__, static_url_path="", static_folder=wallpaper_path)
@@ -43,6 +44,15 @@ def one(id):
     return render_template('image.html', id=id)
 
 
+@app.route('/info/<int:id>')
+def info(id):
+    image_list = get_one_image_from_db(id)
+    image_id, image_name, *unuse = image_list[0]
+    app.static_folder = os.path.dirname(image_name)
+    image_url = os.path.basename(image_name)
+    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
+
+
 @app.route('/random')
 def random():
     image_name, image_id = get_random_image_from_db()
@@ -62,6 +72,16 @@ def latest():
 @app.route('/change')
 def change():
     image_name, image_id = change_wallpaper.main()
+    app.static_folder = os.path.dirname(image_name)
+    image_url = os.path.basename(image_name)
+    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
+
+
+@app.route('/change/<int:id>')
+def change_this(id):
+    image_list = get_one_image_from_db(id)
+    image_id, image_name, *unuse = image_list[0]
+    set_wallpaper(image_name)
     app.static_folder = os.path.dirname(image_name)
     image_url = os.path.basename(image_name)
     return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
