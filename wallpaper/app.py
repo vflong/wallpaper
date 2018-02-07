@@ -2,7 +2,7 @@
 
 import os
 import argparse
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from config import get_random_image_from_db
 from config import get_latest_image_from_db
@@ -49,7 +49,8 @@ def info(id):
     image_id, image_name, *unuse = image_list[0]
     app.static_folder = os.path.dirname(image_name)
     image_url = os.path.basename(image_name)
-    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
+    request_path = request.path.strip('/')
+    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url, request_path=request_path)
 
 
 @app.route('/random')
@@ -57,7 +58,8 @@ def random():
     image_name, image_id = get_random_image_from_db()
     app.static_folder = os.path.dirname(image_name)
     image_url = os.path.basename(image_name)
-    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
+    request_path = request.path.strip('/')
+    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url, request_path=request_path)
 
 
 @app.route('/latest')
@@ -65,7 +67,8 @@ def latest():
     image_name, image_id = get_latest_image_from_db()
     app.static_folder = os.path.dirname(image_name)
     image_url = os.path.basename(image_name)
-    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url)
+    request_path = request.path.strip('/')
+    return render_template('info.html', image_id=image_id, image_name=image_name, image_url=image_url, request_path=request_path)
 
 
 @app.route('/change')

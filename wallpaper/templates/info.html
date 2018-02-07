@@ -28,11 +28,18 @@
 <h1> 图片信息 </h1>
 <p> 图片路径：{{ image_name }}</p>
 <p>
-    <input type="button" value="上一张" onclick="window.location.href='/info/{{ image_id-1 }}';"/>
-    <input type="button" value="下一张" onclick="window.location.href='/info/{{ image_id+1 }}';"/>
+    {% if request_path == "random" %}
+        <button onclick="myReload()">随机</button>
+    {% else %}
+        {% if image_id != 1 %}
+            <input type="button" value="上一张" onclick="window.location.href='/info/{{ image_id-1 }}';"/>
+        {% else %}
+            <input type="button" disabled value="上一张" onclick="window.location.href='/info/{{ image_id-1 }}';"/>
+        {% endif %}
+        <input type="button" value="下一张" onclick="window.location.href='/info/{{ image_id+1 }}';"/>
+    {% endif %}
 </p>
 <p>
-    <button onclick="myReload()">刷新</button>
     <button type="button" onclick="loadXMLDoc()">设为壁纸</button>
 </p>
 <img src={{ url_for('static', filename=image_url) }} alt="Smiley face" height="50%" width="50%">
