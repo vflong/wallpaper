@@ -139,6 +139,9 @@ def get_one_image_from_db(id):
     if int(id) > max_id:
         logging.info("id 大于壁纸总数，取最新的壁纸")
         id = max_id
+    elif int(id) < 1:
+        logging.info("id 小于 1，取第一张壁纸")
+        id = 1
     num = (int(id),)
     c.execute("SELECT * FROM  wallpaper WHERE id = ?", num)
     ret = c.fetchall()
