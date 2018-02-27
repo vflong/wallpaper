@@ -6,7 +6,7 @@
 Python 3.6.3
 
 # 安装依赖库
-pip install -r requirements.txt
+pipenv install
 
 # 从 bing 获取壁纸
 python get_bing_wallpaper.py
