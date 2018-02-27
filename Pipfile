@@ -8,6 +8,11 @@ name = "pypi"
 [packages]
 
 requests-html = "*"
+"beautifulsoup4" = "*"
+lxml = "*"
+Pillow = "*"
+psutil = "*"
+requests = "*"
 
 
 [dev-packages]

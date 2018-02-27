@@ -3,4 +3,3 @@ lxml
 Pillow
 psutil
 requests
-urllib
