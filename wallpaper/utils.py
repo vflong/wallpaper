@@ -43,6 +43,7 @@ def get_spotlight_src_file():
                 if not os.path.exists(dst):
                     shutil.copy2(file, dst)
                     insert_db(dst)
+                    count = count + 1
             elif imsize == 1080:
                 dst = tablet_path + "\\" + file + ".jpg"
                 shutil.copy2(file, dst)
@@ -52,7 +53,6 @@ def get_spotlight_src_file():
             if os.path.exists(dst):
                 continue
             print(dst)
-            count = count + 1
     return count
 
 
