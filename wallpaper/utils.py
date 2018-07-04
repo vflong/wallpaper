@@ -16,8 +16,8 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S')
 
-if not platform.platform().startswith("Windows-10"):
-    sys.exit("Windows 10 only.")
+# if not platform.platform().startswith("Windows-10"):
+#     sys.exit("Windows 10 only.")
 
 
 def get_image_action(count):
