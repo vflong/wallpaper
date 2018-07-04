@@ -1,0 +1,9 @@
+language: python
+cache: pipenv
+python:
+    - "3.6"
+    - "3.5"
+    - "3.4"
+install:
+    - pipenv install
+    - python wallpaper/get_bingcom_wallpaper.py
