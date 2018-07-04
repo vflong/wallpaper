@@ -1,0 +1,8 @@
+version: build{build}
+
+environment:
+    - PYTHON: "C:\\Python36"
+
+install:
+    - pip install pipenv
+    - pipenv install
