@@ -7,3 +7,12 @@ environment:
 install:
     - "%PYTHON%\\python.exe -m pip install pipenv"
     - "%PYTHON%\\Scripts\\pipenv.exe install"
+    - "%PYTHON%\\Scripts\\pipenv.exe shell"
+
+test_script:
+    - python wallpaper/get_bingcom_wallpaper.py
+
+build: false
+cache:
+    - '%LOCALAPPDATA%\pip\cache'
+    - '%USERPROFILE%\.cache\pre-commit'
