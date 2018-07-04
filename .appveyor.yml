@@ -5,5 +5,5 @@ environment:
         - PYTHON: "C:\\Python36"
 
 install:
-    - pip3 install pipenv
+    - python -m pip install pipenv
     - pipenv install
