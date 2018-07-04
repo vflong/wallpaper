@@ -4,6 +4,7 @@ python:
     - "3.6"
     - "3.5"
     - "3.4"
+    - "3.3"
 install:
     - pipenv install
     - python wallpaper/get_bingcom_wallpaper.py
