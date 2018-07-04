@@ -10,9 +10,10 @@ name = "pypi"
 requests-html = "*"
 "beautifulsoup4" = "*"
 lxml = "*"
-Pillow = "*"
+pillow = "*"
 psutil = "*"
 requests = "*"
+flask = "*"
 
 
 [dev-packages]
