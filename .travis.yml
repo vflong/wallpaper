@@ -1,3 +1,5 @@
+os:
+    - windows 10
 language: python
 cache: pipenv
 python:
