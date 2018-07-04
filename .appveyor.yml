@@ -9,7 +9,7 @@ install:
     - "%PYTHON%\\Scripts\\pipenv.exe install"
 
 test_script:
-    - "%PYTHON%\\Scripts\\pipenv.exe run python wallpaper\\get_bingcom_wallpaper.py"
+    - "%PYTHON%\\Scripts\\pipenv.exe run python wallpaper\\test.py"
 
 build: false
 cache:
