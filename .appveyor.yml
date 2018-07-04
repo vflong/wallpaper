@@ -6,4 +6,4 @@ environment:
 
 install:
     - "%PYTHON%\\python.exe -m pip install pipenv"
-    - "%PYTHON%\\pipenv.exe install"
+    - "%PYTHON%\\Scripts\\pipenv.exe install"
