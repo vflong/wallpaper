@@ -1,5 +1,5 @@
 os:
-    - windows 10
+    - windows
 language: python
 cache: pipenv
 python:
@@ -10,4 +10,5 @@ python:
 install:
     - pip install pipenv
     - pipenv install
+script:
     - python wallpaper/get_bingcom_wallpaper.py
